@@ -1,4 +1,5 @@
 #include <LiquidCrystal.h>
+#include <stdio.h>
 
 
 #define echoPin 13
@@ -12,6 +13,9 @@
 
 int reciver = 16;
 int reciver2 = 18;
+int reciver3 = 14; 
+int reciver4 = 15; 
+int reciver5 = 17 ; // midle sensor 
 /*
 int sensorValue=0;
 int ledValue=0;
@@ -37,11 +41,12 @@ void rotate_right(void){
   digitalWrite(in2Pin, LOW);
   digitalWrite(in3Pin, LOW);
   digitalWrite(in4Pin, HIGH);
+  
   digitalWrite(in5Pin, HIGH);
   digitalWrite(in6Pin, HIGH);
 }
 void rotate_left(void){
-  Speed = 255;
+  Speed = fast;
   analogWrite(enablePin3, Speed);
   digitalWrite(in5Pin, LOW);
   digitalWrite(in6Pin, HIGH);
@@ -53,6 +58,7 @@ void rotate_left(void){
   digitalWrite(in2Pin, HIGH);
 }
 void Brake(void){
+  
   digitalWrite(in1Pin, HIGH);
   digitalWrite(in2Pin, HIGH);
   
@@ -61,6 +67,7 @@ void Brake(void){
   
   digitalWrite(in5Pin, HIGH);
   digitalWrite(in6Pin, HIGH);
+  
 }
 
 
@@ -78,8 +85,9 @@ void Forward_Rev(void){
   digitalWrite(in6Pin, HIGH );
   
 
-  
 }
+
+
 void Backward_Rev(void){
   int speed = 255 ; 
 
@@ -229,15 +237,31 @@ void loop() {
   
   int reading = digitalRead(reciver);
   int reading2 = digitalRead(reciver2);
+  int reading3 = digitalRead(reciver3);
+  int reading4 = digitalRead(reciver4);
+  int reading5 = digitalRead(reciver5);  
   
-  
-  if (reading == HIGH & reading2 == HIGH)
+  if (reading == HIGH & reading2 == HIGH & reading5 == LOW)
   {
     
-    
   Forward_Rev();
-    
-  } 
+
+  } else if (reading == LOW & reading2 == LOW )
+  {
+  Brake();     
+ 
+  }else if (reading == LOW & reading2 == HIGH )
+ { 
+  rotate_left();
+  delay(2000);
+  Brake();
+
+ } else if (reading == HIGH & reading2 == LOW )
+ {
+   rotate_right();
+   delay(2000);
+   Brake();
+ }
   
   /* if (reading == HIGH )
   {
